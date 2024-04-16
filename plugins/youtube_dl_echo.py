@@ -232,12 +232,12 @@ async def echo(bot, update):
             ])
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
         await imog.delete(True)
-        await bot.send_message(
-            chat_id=update.chat.id,
-            text=Translation.TECH_VJ_FORMAT_SELECTION + "\n" + Translation.TECH_VJ_SET_CUSTOM_USERNAME_PASSWORD,
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML,
-            reply_to_message_id=update.id
+        download_message = await bot.send_message(
+    chat_id=update.chat.id,
+    text=Translation.TECH_VJ_FORMAT_SELECTION,
+    reply_markup=reply_markup,
+    parse_mode=enums.ParseMode.HTML,
+    reply_to_message_id=update.id
         )
     else:
         inline_keyboard = []
@@ -256,7 +256,7 @@ async def echo(bot, update):
             )
         ])
         reply_markup = InlineKeyboardMarkup(inline_keyboard)
-        await imog.delete(True)
+        await asyncio.gather(imog.delete(True), update.delete(), download_message.delete())
         await bot.send_message(
         chat_id=update.chat.id,
         text=Translation.TECH_VJ_FORMAT_SELECTION,
